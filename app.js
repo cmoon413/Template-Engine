@@ -45,11 +45,17 @@ const managerQuestion = baseQuestions.concat([{
     message: "What's your office number",
 }])
 
-const employeeJob = {
+const employeeEntryQuestion = {
     type: 'list',
     name: 'job',
     message: 'What kind of employee would you like to add?',
     choices: ['Engineer', 'Intern', 'Manager']
+}
+const repeatQuestion = {
+    type: 'confirm',
+    name: 'askAgain',
+    message: 'Do you want to enter another employee(just hit enter for YES)?',
+    default: true
 }
 
 
@@ -57,8 +63,8 @@ const employeeJob = {
 
 
 
-function beginQuestions() {
-    inquirer.prompt(employeeJob).then(answers => {
+function askEmployeeType() {
+    inquirer.prompt(employeeEntryQuestion).then(answers => {
         switch (answers.job) {
             case 'Engineer':
                 createEmployee(engineerQuestion)
@@ -80,9 +86,21 @@ function createEmployee() {
     console.log(engineerQuestion)
     inquirer.prompt(engineerQuestion).then(answers => {
         employees.push(answers)
-        console.log(employees)
+        askToEnterMore()
 
     });
 }
 
-beginQuestions()
+function askToEnterMore() {
+    inquirer.prompt(repeatQuestion).then(answers => {
+        if (answers.askAgain) {
+            askEmployeeType()
+        } else {
+            console.log(employees)
+            console.log('fin')
+        }
+    });
+}
+
+
+askEmployeeType()
