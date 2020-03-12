@@ -8,7 +8,7 @@ const OUTPUT_DIR = path.resolve(__dirname, "output")
 const outputPath = path.join(OUTPUT_DIR, "team.html")
 const render = require("./lib/htmlRenderer")
 
-var employees = []
+var employeesObjects = []
 
 const baseQuestions = [{
         type: 'input',
@@ -82,10 +82,24 @@ function askEmployeeType() {
     })
 }
 
-function createEmployee() {
-    console.log(engineerQuestion)
-    inquirer.prompt(engineerQuestion).then(answers => {
-        employees.push(answers)
+function createEmployeeObject(employee) {
+    if (employee.github) {
+        return new Engineer(employee.name, employee.id, employee.email, employee.github)
+    }
+    if (employee.school) {
+        return new Intern(employee.name, employee.id, employee.email, employee.school)
+    }
+    if (employee.office) {
+        return new Manager(employee.name, employee.id, employee.email, employee.office)
+    }
+
+}
+
+function createEmployee(employeeType) {
+    console.log(employeeType)
+    inquirer.prompt(employeeType).then(answers => {
+
+        employeesObjects.push(createEmployeeObject(answers))
         askToEnterMore()
 
     });
@@ -96,7 +110,7 @@ function askToEnterMore() {
         if (answers.askAgain) {
             askEmployeeType()
         } else {
-            console.log(employees)
+            console.log(employeesObjects)
             console.log('fin')
         }
     });
