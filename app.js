@@ -8,29 +8,66 @@ const OUTPUT_DIR = path.resolve(__dirname, "output")
 const outputPath = path.join(OUTPUT_DIR, "team.html")
 const render = require("./lib/htmlRenderer")
 
+var employees = []
 
+const baseQuestions = [{
+        type: 'input',
+        name: 'name',
+        message: "What's your name"
+    },
+    {
+        type: 'input',
+        name: 'id',
+        message: "What's your id",
+
+    },
+    {
+        type: 'input',
+        name: 'email',
+        message: "What's your email",
+
+    }
+]
+
+const engineerQuestion = baseQuestions.concat([{
+    type: 'input',
+    name: 'github',
+    message: "What's your github",
+}])
+const internQuestion = baseQuestions.concat([{
+    type: 'input',
+    name: 'school',
+    message: "What's your School",
+}])
+const managerQuestion = baseQuestions.concat([{
+    type: 'input',
+    name: 'office',
+    message: "What's your office number",
+}])
 
 const employeeJob = {
     type: 'list',
     name: 'job',
     message: 'What kind of employee would you like to add?',
-    choices: ['Employee', 'Engineer', 'Intern', 'Manager']
+    choices: ['Engineer', 'Intern', 'Manager']
 }
+
+
+
+
+
 
 function beginQuestions() {
     inquirer.prompt(employeeJob).then(answers => {
         switch (answers.job) {
-            case 'Employee':
-                console.log('success')
-                break
             case 'Engineer':
-                console.log('success')
+                createEmployee(engineerQuestion)
                 break
             case 'Intern':
-                console.log('success')
+                createEmployee(internQuestion)
                 break
             case 'Manager':
-                console.log('success')
+                createEmployee(managerQuestion)
                 break
 
             default:
@@ -38,4 +75,14 @@ function beginQuestions() {
         }
     })
 }
+
+function createEmployee() {
+    console.log(engineerQuestion)
+    inquirer.prompt(engineerQuestion).then(answers => {
+        employees.push(answers)
+        console.log(employees)
+
+    });
+}
+
 beginQuestions()
